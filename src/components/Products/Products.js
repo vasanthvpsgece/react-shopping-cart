@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import Product from './Product';
-import '../index.css';
+import '../../index.css';
 
 class Products extends Component {
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <ul className="products">
                     {this.props.products.map(product => (
                         <Product key={product._id} product={product} />
                     ))}
                 </ul>
-            </div>
+            </React.Fragment>
         )
     }
 
