@@ -3,6 +3,7 @@ import './index.css';
 import Products from './components/Products/Products';
 import data from './data.json';
 import Filter from './components/Filter/Filter';
+import Cart from './components/Cart/Cart'
 
 class App extends Component{
 
@@ -11,7 +12,8 @@ class App extends Component{
     this.state = {
       products: data.products,
       size: "",
-      sort: ''
+      sort: '',
+      cartItems: []
     }
   }
   
@@ -39,6 +41,38 @@ class App extends Component{
     this.setState({products: sortedProducts})
   }
 
+  addToCartClickHandler = (product) => {
+      let cartItems = this.state.cartItems.slice();
+      let alreadyExists = false;
+
+      cartItems = cartItems.map(cartItem => {
+        if(cartItem._id === product._id) {
+          alreadyExists = true;
+          return ({...cartItem, count: cartItem.count+1})
+        }
+        return cartItem;
+      })
+
+      if(!alreadyExists) {
+        cartItems.push({...product, count: 1})
+      }
+
+      this.setState({cartItems: cartItems})
+  }
+
+  removeClickHandler = (product) => {
+    let dupCartItems = this.state.cartItems.slice();
+
+    dupCartItems = dupCartItems.map(cartItem => {
+      if(cartItem._id === product._id) {
+          return({...cartItem, count: cartItem.count-1})
+      }
+      return cartItem;
+    }).filter(cartItem => cartItem.count > 0)
+
+    this.setState({cartItems: dupCartItems})   
+  }
+
   render() {  
     return (
     <div className='grid-container'>
@@ -53,10 +87,10 @@ class App extends Component{
               onFilterChangeHandler={this.filterChangeHandler}
               onSortChangeHandler={this.sortChangeHandler}
             />
-            <Products products={this.state.products}></Products>
+            <Products products={this.state.products} onAddToCartClick={this.addToCartClickHandler}></Products>
           </div>
           <div className="sidebar">
-            Cart Items
+            <Cart cartItems={this.state.cartItems} onRemoveClick={this.removeClickHandler} />
           </div>
         </div>
       </main>

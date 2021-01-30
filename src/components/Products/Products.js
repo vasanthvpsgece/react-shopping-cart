@@ -8,7 +8,7 @@ class Products extends Component {
             <React.Fragment>
                 <ul className="products">
                     {this.props.products.map(product => (
-                        <Product key={product._id} product={product} />
+                        <Product key={product._id} product={product} onAddToCartClick={this.props.onAddToCartClick} />
                     ))}
                 </ul>
             </React.Fragment>
