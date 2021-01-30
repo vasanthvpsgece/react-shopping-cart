@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import formatCurrency from '../utils/utils'
-import '../index.css';
+import formatCurrency from '../../utils/utils'
+import '../../index.css';
 
 class Product extends Component {
 
