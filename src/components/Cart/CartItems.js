@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import formatCurrency from '../../utils/utils'
+import Fade from 'react-reveal/Fade'
 
 class CartItems extends Component {
 
@@ -22,15 +23,17 @@ class CartItems extends Component {
 
         if(this.props.cartItems.length > 0) {
             total = "Total: " + formatCurrency(this.props.cartItems.reduce((acc, cur) => acc + (cur.count * cur.price),0))
-            button = <button className="button primary">Proceed</button>;
+            button = <button className="button primary" onClick={this.props.onProceedOrder}>Proceed</button>;
         }
 
         return(
             <React.Fragment>
                 <div className="cart-items">
+                    <Fade left cascade>
                     <ul>
                         {cartItems}
                     </ul>
+                    </Fade>
                 </div>
                 <div className="total">
                     <div>{total}</div>

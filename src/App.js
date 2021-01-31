@@ -11,9 +11,10 @@ class App extends Component{
     super(props);
     this.state = {
       products: data.products,
-      size: "",
+      size: '',
       sort: '',
-      cartItems: []
+      cartItems: JSON.parse(localStorage.getItem("cartItems")) || [],
+      showContactForm: false
     }
   }
   
@@ -56,12 +57,13 @@ class App extends Component{
       if(!alreadyExists) {
         cartItems.push({...product, count: 1})
       }
-
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
       this.setState({cartItems: cartItems})
   }
 
   removeClickHandler = (product) => {
     let dupCartItems = this.state.cartItems.slice();
+    let showForm = this.state.showContactForm;
 
     dupCartItems = dupCartItems.map(cartItem => {
       if(cartItem._id === product._id) {
@@ -70,8 +72,18 @@ class App extends Component{
       return cartItem;
     }).filter(cartItem => cartItem.count > 0)
 
-    this.setState({cartItems: dupCartItems})   
+    localStorage.setItem("cartItems", JSON.stringify(dupCartItems));
+
+    if(dupCartItems.length === 0) {
+      showForm = false;
+    }
+    this.setState({cartItems: dupCartItems, showContactForm: showForm})   
   }
+
+  proceedOrder = () => {
+    this.setState(prevState => ({showContactForm: !prevState.showContactForm}))
+  }
+
 
   render() {  
     return (
@@ -90,7 +102,11 @@ class App extends Component{
             <Products products={this.state.products} onAddToCartClick={this.addToCartClickHandler}></Products>
           </div>
           <div className="sidebar">
-            <Cart cartItems={this.state.cartItems} onRemoveClick={this.removeClickHandler} />
+            <Cart 
+              cartItems={this.state.cartItems}
+              showContactForm={this.state.showContactForm} 
+              onRemoveClick={this.removeClickHandler} 
+              onProceedOrder={this.proceedOrder} />
           </div>
         </div>
       </main>

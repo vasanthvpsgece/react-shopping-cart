@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Contact from '../Contact/Contact';
 import CartItems from './CartItems';
 
 class Cart extends Component {
@@ -13,7 +14,11 @@ class Cart extends Component {
         return(
             <div className="cart">
                 {cartHeader}
-                <CartItems cartItems={this.props.cartItems} onRemoveClick={this.props.onRemoveClick} />
+                <CartItems 
+                    cartItems={this.props.cartItems} 
+                    onRemoveClick={this.props.onRemoveClick} 
+                    onProceedOrder={this.props.onProceedOrder} />
+                {this.props.showContactForm && <Contact />}
             </div>
         )
     }
