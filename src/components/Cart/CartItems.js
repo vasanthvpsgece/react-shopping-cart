@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import formatCurrency from '../../utils/utils'
 import Fade from 'react-reveal/Fade'
+import { remFromCartActions, proceedToOrder } from '../../actions/cartActions'
+import { connect } from 'react-redux';
 
-class CartItems extends Component {
+const CartItems = ({cartItemsList, remItemFromCart, proceedOrder}) => {
 
-    render() {
         let total = null;
         let button = null
 
-        const cartItems = this.props.cartItems.map(cartItem => {
+        const cartItems = cartItemsList.map(cartItem => {
             return (<li key={cartItem._id}>
                         <div>
                             <img src={cartItem.image} alt={cartItem.title} />
@@ -16,14 +17,14 @@ class CartItems extends Component {
                         <div className="right">
                             <div>{cartItem.title}</div>
                             <div>{formatCurrency(cartItem.price)} X {cartItem.count} </div>
-                            <button onClick={() => this.props.onRemoveClick(cartItem)}>Remove</button>
+                            <button onClick={() => remItemFromCart(cartItem._id)}>Remove</button>
                         </div>
                     </li>)
         })
 
-        if(this.props.cartItems.length > 0) {
-            total = "Total: " + formatCurrency(this.props.cartItems.reduce((acc, cur) => acc + (cur.count * cur.price),0))
-            button = <button className="button primary" onClick={this.props.onProceedOrder}>Proceed</button>;
+        if(cartItemsList.length > 0) {
+            total = "Total: " + formatCurrency(cartItemsList.reduce((acc, cur) => acc + (cur.count * cur.price),0))
+            button = <button className="button primary" onClick={proceedOrder}>Proceed</button>;
         }
 
         return(
@@ -41,7 +42,19 @@ class CartItems extends Component {
                 </div>
             </React.Fragment>
         )
+}
+
+const mapStateToProps = (state) => {
+    return{
+        cartItemsList: state.cartItemsStore.cartItems
     }
 }
 
-export default CartItems;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        remItemFromCart: (_id) => dispatch(remFromCartActions(_id)),
+        proceedOrder: () => dispatch(proceedToOrder())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartItems);

@@ -1,21 +1,40 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import Product from './Product';
 import Fade from 'react-reveal/Fade'
 import '../../index.css';
+import {fetchProductsActions} from '../../actions/productActions'
+import { connect } from 'react-redux';
 
-class Products extends Component {
-    render() {
+const Products = ({fetchProducts, ...props}) => {
+
+        useEffect(() => {
+            fetchProducts();
+        }, [fetchProducts])
+
         return (
             <Fade bottom>
                 <ul className="products">
-                    {this.props.products.map(product => (
-                        <Product key={product._id} product={product} onAddToCartClick={this.props.onAddToCartClick} />
-                    ))}
+                    {
+                        props.products ?
+                        props.products.map(product => (
+                        <Product key={product._id} product={product} /> )):
+                        <div>Loading ...</div>
+                    }
                 </ul>
             </Fade>
         )
-    }
-
 }
 
-export default Products;
+const mapStateToProps = (state) => {
+    return {
+        products: state.productsStore.products
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchProducts: () => dispatch(fetchProductsActions()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

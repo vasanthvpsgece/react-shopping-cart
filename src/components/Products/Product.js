@@ -1,25 +1,30 @@
-import React, {Component} from 'react'
+import React from 'react'
 import formatCurrency from '../../utils/utils'
 import '../../index.css';
+import {addToCartActions} from '../../actions/cartActions'
+import { connect } from 'react-redux';
 
-class Product extends Component {
+const Product = (props) => {
 
-    render() {
         return(
             <li>
                 <div className="product">
-                    <a href={"#" + this.props.product._id}>
-                        <img src={this.props.product.image} alt={this.props.product.title}></img>
-                        <p>{this.props.product.title}</p>
+                    <a href={"#" + props.product._id}>
+                        <img src={props.product.image} alt={props.product.title}></img>
+                        <p>{props.product.title}</p>
                     </a>
                     <div className="product-price">
-                        <div>{formatCurrency(this.props.product.price)}</div>
-                        <button className="button primary" onClick={() => this.props.onAddToCartClick(this.props.product)}>Add to Cart</button>
+                        <div>{formatCurrency(props.product.price)}</div>
+                        <button className="button primary" onClick={() => props.addToCart(props.product)}>Add to Cart</button>
                     </div>
                 </div>
             </li>
         )
-    }
 }
 
-export default Product
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addToCart: (cartItem) => dispatch(addToCartActions(cartItem))
+    }
+}
+export default connect(null, mapDispatchToProps)(Product)
