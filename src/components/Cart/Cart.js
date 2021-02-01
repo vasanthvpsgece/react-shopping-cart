@@ -1,27 +1,29 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import Contact from '../Contact/Contact';
 import CartItems from './CartItems';
 
-class Cart extends Component {
+const Cart = ({cartItems, showContactForm}) => {
 
-    render() {
         let cartHeader = <div className="cart cart-header">No Items in the Cart</div>;
 
-        if(this.props.cartItems.length !== 0) {
-             cartHeader = <div className="cart cart-header">You have {this.props.cartItems.length} Items</div>
+        if(cartItems.length !== 0) {
+             cartHeader = <div className="cart cart-header">You have {cartItems.length} Items</div>
         }
 
         return(
             <div className="cart">
                 {cartHeader}
-                <CartItems 
-                    cartItems={this.props.cartItems} 
-                    onRemoveClick={this.props.onRemoveClick} 
-                    onProceedOrder={this.props.onProceedOrder} />
-                {this.props.showContactForm && <Contact />}
+                <CartItems />
+                {showContactForm && <Contact />}
             </div>
         )
-    }
 }
 
-export default Cart;
+const mapStateToProps = (state) => {
+    return{
+        cartItems: state.cartItemsStore.cartItems,
+        showContactForm: state.cartItemsStore.showContactForm
+    }
+}
+export default connect(mapStateToProps)(Cart);

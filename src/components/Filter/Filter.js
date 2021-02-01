@@ -1,16 +1,17 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { filterProductsActions, sortProductsActions } from '../../actions/productActions';
 
-class Filter extends Component {
+const Filter = ({products, sortProducts, filterProducts}) => {
 
-    render() {
         return(
         <div className="filter">
             <div className="filter-result">
-                {this.props.count} Products
+                {products && products.length} Products
             </div>
             <div className="filter-sort">
                 Order By {" "}
-                <select onChange={this.props.onSortChangeHandler}>
+                <select onChange={(event) => sortProducts(event.target.value)}>
                     <option>Latest</option>
                     <option value="lowest">Lowest</option>
                     <option value="highest">Highest</option>
@@ -18,7 +19,7 @@ class Filter extends Component {
             </div>
             <div>
                 Filter By {""}
-                <select onChange={this.props.onFilterChangeHandler}>
+                <select onChange={(event) => filterProducts(event.target.value)} >
                     <option value="">ALL</option>
                     <option value="XS">XS</option>
                     <option value="S">S</option>
@@ -29,7 +30,18 @@ class Filter extends Component {
                 </select>
             </div>
         </div>)
+}
+
+const mapStateToProps = (state) => {
+    return {
+        products: state.productsStore.products
     }
 }
 
-export default Filter;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        filterProducts: (eventValue) => dispatch(filterProductsActions(eventValue)),
+        sortProducts: (eventValue) => dispatch(sortProductsActions(eventValue))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

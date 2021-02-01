@@ -1,0 +1,6 @@
+export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+export const FILTER_PRODUCTS = "FILTER_PRODUCTS";
+export const SORT_PRODUCTS = "SORT_PRODUCTS";
+export const ADD_TO_CART = "ADD_TO_CART";
+export const REM_FROM_CART = "REM_FROM_CART";
+export const PROCEED_TO_ORDER = "PROCEED_TO_ORDER";
