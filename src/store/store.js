@@ -3,6 +3,15 @@ import thunk from 'redux-thunk'
 import productReducer from '../reducers/productReducer'
 import cartReducer from '../reducers/cartReducer'
 
+const logger = () => {
+    return (dispatch) => {
+        return (action) => {
+            console.log('Middleware');
+            return dispatch(action)
+        }
+    }
+}
+
 const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const rootReducer = combineReducers({
@@ -20,10 +29,8 @@ const initialStateFn = () => {
 
 const initialState = initialStateFn();
 
-console.log(initialState)
-
 const store = createStore(rootReducer, initialState,
-    composeEnhancers(applyMiddleware(thunk)))
+    composeEnhancers(applyMiddleware(logger, thunk)))
 
 store.subscribe(() => {
     localStorage.setItem("cartItems", JSON.stringify(store.getState().cartItemsStore.cartItems))
