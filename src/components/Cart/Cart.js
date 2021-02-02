@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import Contact from '../Contact/Contact';
 import CartItems from './CartItems';
@@ -11,11 +11,17 @@ const Cart = ({cartItems, showContactForm}) => {
              cartHeader = <div className="cart cart-header">You have {cartItems.length} Items</div>
         }
 
+        let contactForm = useMemo(() => {
+            return (
+                <Contact />
+            )
+        }, [])
+
         return(
             <div className="cart">
                 {cartHeader}
                 <CartItems />
-                {showContactForm && <Contact />}
+                {showContactForm && contactForm}
             </div>
         )
 }
