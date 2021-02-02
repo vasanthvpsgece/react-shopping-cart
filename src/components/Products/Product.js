@@ -9,7 +9,7 @@ const Product = (props) => {
         return(
             <li>
                 <div className="product">
-                    <a href={"#" + props.product._id}>
+                    <a href={"#" + props.product._id} onClick={() => props.openModal(props.product)}>
                         <img src={props.product.image} alt={props.product.title}></img>
                         <p>{props.product.title}</p>
                     </a>

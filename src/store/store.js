@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import thunk from 'redux-thunk'
 import productReducer from '../reducers/productReducer'
 import cartReducer from '../reducers/cartReducer'
+import modalReducer from '../reducers/modalReducer'
 
 const logger = () => {
     return (dispatch) => {
@@ -16,7 +17,8 @@ const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX
 
 const rootReducer = combineReducers({
     productsStore: productReducer,
-    cartItemsStore: cartReducer
+    cartItemsStore: cartReducer,
+    modalStore: modalReducer
 })
 
 const initialStateFn = () => {

@@ -4,3 +4,6 @@ export const SORT_PRODUCTS = "SORT_PRODUCTS";
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REM_FROM_CART = "REM_FROM_CART";
 export const PROCEED_TO_ORDER = "PROCEED_TO_ORDER";
+
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";
